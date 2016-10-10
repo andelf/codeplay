@@ -1,0 +1,14 @@
+[package]
+name = "mmgraph"
+version = "0.1.0"
+authors = ["andelf <andelf@gmail.com>"]
+
+[[bin]]
+name = "mmgraph"
+path = "main.rs"
+
+[lib]
+name = "mmgraph"
+path = "lib.rs"
+
+[dependencies]
