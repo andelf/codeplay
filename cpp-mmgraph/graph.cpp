@@ -65,20 +65,6 @@ int main(int argc, char const *argv[]) {
     else
       std::cout << "parent[" << i << "] = no parent" << std::endl;
 */
-    //distance_map(boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, g))));
-
-
-
-/*  Graph g(10);
-  add_edge('a', 'b', g);
-  add_edge('b', 'd', g);
-  add_edge('b', 'c', g);
-  add_edge('a', 'c', g);
-  add_edge('c', 'e', g);
-  add_edge('d', 'e', g);
-
-  // std::cout << g << std::end;
-*/
   // write_graphviz(std::cout, g);
 /*
   graph_traits<Graph>::edge_iterator ei, eend;
@@ -92,6 +78,5 @@ int main(int argc, char const *argv[]) {
   }*/
 
   //std::cout << num_edges(g) << std::endl;
-
   return 0;
 }
