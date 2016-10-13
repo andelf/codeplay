@@ -53,35 +53,14 @@ fn test_convert_hex_to_base64() {
 pub fn fixed_xor(a: &[u8], b: &[u8]) -> Vec<u8> {
     assert_eq!(a.len(), b.len(), "two equal-length buffers");
     static CODES: &'static [u8] = b"0123456789abcdef";
-    static mut XOR_CODES: Option<HashMap<(u8,u8),u8>> = None;
-    static INIT_CODES: Once = ONCE_INIT;
-    unsafe {
-        INIT_CODES.call_once(|| {
-            let codes = b"0123456789abcdef".iter().enumerate().cartesian_product(
-                b"0123456789abcdef".iter().enumerate()
-            )
-                .map(|((i,&ih),(j,&jh))| {
-                    ((ih,jh), CODES[(i ^ j)])
-                }).
-                collect();
-            XOR_CODES = Some(codes);
-        });
-    }
     let mut xord = Vec::with_capacity(a.len());
-    a.iter().zip(b.iter()).foreach(|(&i,&j)| {
-        unsafe {
-            XOR_CODES.as_ref().map(|codes| {
-                codes.get(&(i,j)).map(|&half_byte| xord.push(half_byte))
-            });
-        }
-    });
-    // for (hex1, hex2) in a.chunks(2).zip(b.chunks(2)) {
-    //     let a = unsafe { u8::from_str_radix(str::from_utf8_unchecked(hex1), 16).unwrap() };
-    //     let b = unsafe { u8::from_str_radix(str::from_utf8_unchecked(hex2), 16).unwrap() };
-    //     let c = a ^ b;
-    //     xord.push(CODES[(c >> 4) as usize]);
-    //     xord.push(CODES[(c & 0b1111) as usize]);
-    // }
+    for (hex1, hex2) in a.chunks(2).zip(b.chunks(2)) {
+        let a = unsafe { u8::from_str_radix(str::from_utf8_unchecked(hex1), 16).unwrap() };
+        let b = unsafe { u8::from_str_radix(str::from_utf8_unchecked(hex2), 16).unwrap() };
+        let c = a ^ b;
+        xord.push(CODES[(c >> 4) as usize]);
+        xord.push(CODES[(c & 0b1111) as usize]);
+    }
     xord
 }
 
