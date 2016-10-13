@@ -16,4 +16,6 @@ mod challenges;
 fn main() {
 
     challenges::set1_challenge3();
+
+    challenges::set1_challenge4();
 }

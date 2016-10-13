@@ -73,7 +73,7 @@ fn test_fixed_xor() {
 
 
 pub fn hex_to_bytes(encoded: &[u8]) -> Vec<u8> {
-    assert!(encoded.len() & 2 == 0);
+    assert_eq!(encoded.len() & 2, 0);
     let mut bytes = Vec::with_capacity(encoded.len() / 2);
     for hex in encoded.chunks(2) {
         let byte = unsafe { u8::from_str_radix(str::from_utf8_unchecked(hex), 16).unwrap() };
