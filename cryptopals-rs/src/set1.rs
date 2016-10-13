@@ -1,9 +1,6 @@
 use std::str;
-use std::collections::HashMap;
-use std::sync::{Once, ONCE_INIT};
 
 extern crate itertools;
-
 use self::itertools::Itertools;
 
 
@@ -49,7 +46,7 @@ fn test_convert_hex_to_base64() {
     assert_eq!(&hex_to_base64(hex_string)[..], base64_string.as_ref());
 }
 
-
+/// takes two equal-length buffers and produces their XOR combination
 pub fn fixed_xor(a: &[u8], b: &[u8]) -> Vec<u8> {
     assert_eq!(a.len(), b.len(), "two equal-length buffers");
     static CODES: &'static [u8] = b"0123456789abcdef";
@@ -72,6 +69,32 @@ fn test_fixed_xor() {
     let xord = b"746865206b696420646f6e277420706c6179";
 
     assert_eq!(&fixed_xor(a, b)[..], xord.as_ref());
+}
+
+
+pub fn hex_to_bytes(encoded: &[u8]) -> Vec<u8> {
+    assert!(encoded.len() & 2 == 0);
+    let mut bytes = Vec::with_capacity(encoded.len() / 2);
+    for hex in encoded.chunks(2) {
+        let byte = unsafe { u8::from_str_radix(str::from_utf8_unchecked(hex), 16).unwrap() };
+        bytes.push(byte);
+    }
+    bytes
+}
+
+
+pub fn single_byte_xor_cipher(encoded: &[u8], cipher: u8) -> Vec<u8> {
+    let mut bytes = hex_to_bytes(encoded);
+    bytes.iter_mut().foreach(|b| *b ^= cipher);
+    bytes
+}
+
+
+#[test]
+fn test_single_byte_xor_cipher() {
+    let hex = b"1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
+    assert_eq!(&single_byte_xor_cipher(hex, 'X' as u8)[..],
+               b"Cooking MC's like a pound of bacon".as_ref());
 }
 
 
