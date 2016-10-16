@@ -1,0 +1,19 @@
+# Copyright (c) 2016 Copyright Holder All Rights Reserved.
+
+
+env = Environment()
+
+libs = []
+
+env.Replace(
+    CXX = 'clang++',
+    CXXFLAGS = '-std=c++14 -stdlib=libc++',
+    LINKFLAGS = '-stdlib=libc++'
+)
+env.Append(CPPPATH = ["/usr/local/include"])
+env.Append(LIBPATH = ["/usr/local/lib"])
+
+# env.Append(CPPDEFINES=commonDefines)
+# env.Append(CCFLAGS=commonCFlags)
+# env.Append(LINKFLAGS=commonLFlags)
+env.Program('lc23', ['src/lc23.cpp'], LIBS=libs)
