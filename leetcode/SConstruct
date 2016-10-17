@@ -1,5 +1,7 @@
 # Copyright (c) 2016 Copyright Holder All Rights Reserved.
 
+import os.path
+import glob
 
 env = Environment()
 
@@ -17,10 +19,15 @@ env.Append(LIBPATH = ["/usr/local/lib"])
 # env.Append(CCFLAGS=commonCFlags)
 # env.Append(LINKFLAGS=commonLFlags)
 
-env.Program('lc23', ['src/lc23.cpp'], LIBS=libs)
 
-env.Program('lc202', ['src/lc202.cpp'], LIBS=libs)
+for file_path in glob.glob("src/*.cpp"):
+    progname = os.path.splitext(os.path.basename(file_path))[0]
+    env.Program(progname, [file_path], LIBS=libs)
 
-env.Program('lc10', ['src/lc10.cpp'], LIBS=libs)
+# env.Program('lc23', ['src/lc23.cpp'], LIBS=libs)
 
-env.Program('lc295', ['src/lc295.cpp'], LIBS=libs)
+# env.Program('lc202', ['src/lc202.cpp'], LIBS=libs)
+
+# env.Program('lc10', ['src/lc10.cpp'], LIBS=libs)
+
+# env.Program('lc295', ['src/lc295.cpp'], LIBS=libs)
