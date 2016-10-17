@@ -16,4 +16,11 @@ env.Append(LIBPATH = ["/usr/local/lib"])
 # env.Append(CPPDEFINES=commonDefines)
 # env.Append(CCFLAGS=commonCFlags)
 # env.Append(LINKFLAGS=commonLFlags)
+
 env.Program('lc23', ['src/lc23.cpp'], LIBS=libs)
+
+env.Program('lc202', ['src/lc202.cpp'], LIBS=libs)
+
+env.Program('lc10', ['src/lc10.cpp'], LIBS=libs)
+
+env.Program('lc295', ['src/lc295.cpp'], LIBS=libs)
