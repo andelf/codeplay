@@ -9,7 +9,7 @@ libs = []
 
 env.Replace(
     CXX = 'clang++',
-    CXXFLAGS = '-std=c++14 -stdlib=libc++',
+    CXXFLAGS = '-std=c++14 -stdlib=libc++ -g',
     LINKFLAGS = '-stdlib=libc++'
 )
 env.Append(CPPPATH = ["/usr/local/include"])
