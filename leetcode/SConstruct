@@ -6,6 +6,10 @@ import glob
 env = Environment()
 
 libs = []
+libs = ["boost_graph-mt",
+        # "boost_test_exec_monitor-mt",
+        "boost_unit_test_framework-mt"]
+
 
 env.Replace(
     CXX = 'clang++',
@@ -25,9 +29,3 @@ for file_path in glob.glob("src/*.cpp"):
     env.Program(progname, [file_path], LIBS=libs)
 
 # env.Program('lc23', ['src/lc23.cpp'], LIBS=libs)
-
-# env.Program('lc202', ['src/lc202.cpp'], LIBS=libs)
-
-# env.Program('lc10', ['src/lc10.cpp'], LIBS=libs)
-
-# env.Program('lc295', ['src/lc295.cpp'], LIBS=libs)

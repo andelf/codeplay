@@ -11,11 +11,10 @@ public:
         auto lenS = s.size();
         auto lenP = p.size();
 
-        if (lenS == 0 && lenP == 0) {
-            return true;
-        } else if (lenP == 0) {
-            return false;
+        if (lenP == 0) {
+            return lenS == 0;
         }
+
         if (lenP == 1 || p[1] != '*' ) {
             if (lenS > 0 && (p[0] == '.' || s[0] == p[0]))
                 return isMatch(s.substr(1), p.substr(1));
