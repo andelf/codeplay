@@ -6,9 +6,11 @@ import glob
 env = Environment()
 
 libs = []
-libs = ["boost_graph-mt",
-        # "boost_test_exec_monitor-mt",
-        "boost_unit_test_framework-mt"]
+libs = [
+    # "boost_graph-mt",
+    # "boost_test_exec_monitor-mt",
+    # "boost_unit_test_framework-mt"
+]
 
 
 env.Replace(

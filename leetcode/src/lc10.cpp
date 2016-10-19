@@ -25,7 +25,7 @@ public:
             for (auto i=0; i< lenS; ++i) {
                 // // `.*` matches any duplicated
                 // if ((s[i] == s[0]) && (s[0] == p[0] || p[0] == '.')) {
-                if ((s[i] == s[0] && s[0] == p[0]) || p[0] == '.') {
+                if ((s[0] == p[0]) || p[0] == '.') {
                     if (isMatch(s.substr(i+1), p.substr(2))) {
                         return true;
                     }
