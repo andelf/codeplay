@@ -1,3 +1,15 @@
+/*
+ * Design and implement a data structure for Least Recently Used (LRU) cache.
+ * It should support the following operations: get and set.
+ *
+ * get(key) - Get the value (will always be positive) of the key if the key
+ * exists in the cache, otherwise return -1.
+ *
+ * set(key, value) - Set or insert the value if the key is not already present.
+ * When the cache reached its capacity, it should invalidate the least recently
+ * used item before inserting a new item.
+ */
+
 #include <iostream>
 #include <string>
 #include <array>
@@ -20,40 +32,52 @@ using namespace std;
 
 
 class LRUCache{
-    list<pair<int, int>> cache;
+    map<int, int> timeline;  // tick -> key
+    unordered_map<int, int> rev_timeline;    // key -> newest_tick
+    unordered_map<int, int> cache;  // key -> val
     int cap;
+    int tick;
 public:
     LRUCache(int capacity) {
         cap = capacity;
+        tick = 0;
     }
 
     int get(int key) {
-        auto it = find_if(cache.begin(), cache.end(), [&key](const pair<int,int> &kv) {
-            return kv.first == key;
-        });
+        auto it = cache.find(key);
         if (it != cache.end()) {
-            auto kv = *it;
-            cache.erase(it);
-            cache.push_front(kv);
-            return kv.second;
+            timeline.insert( {++tick, key} );
+            auto last_access = rev_timeline[key];
+            timeline.erase(timeline.find(last_access));
+            rev_timeline[key] =  tick;
+            return it->second;
         }
         return -1;
     }
 
     void set(int key, int value) {
-        if (get(key) != -1) {
-            cache.front().second = value;
+        timeline.insert( {++tick, key} );
+        auto it = cache.find(key);
+        if (it != cache.end()) {
+            auto last_access = rev_timeline[key];
+            timeline.erase(timeline.find(last_access));
+            rev_timeline[key] = tick;
+            it->second = value;
         } else {
+            rev_timeline[key] = tick;
             if (cache.size() == cap) {
-                cache.pop_back();
-                cache.push_front( {key, value});
+                auto lru_key = timeline.begin()->second;
+                cache.erase(cache.find(lru_key));
+                rev_timeline.erase(rev_timeline.find(lru_key));
+                timeline.erase(timeline.begin());
+                cache[key] = value;
+                assert(cache.size() <= cap);
             } else {
-                cache.push_front( {key, value});
+                cache[key] = value;
             }
         }
     }
 };
-
 
 int main(int argc, char *argv[])
 {
