@@ -41,12 +41,12 @@ pub fn set1_challenge4() -> io::Result<()> {
 
     for (no, line) in buf.split(|&c| c == '\n' as u8).enumerate() {
         let n = fixed_xor(&line, &line);
-        for i in 0 ... 255 {
+        for i in 0...255 {
             let text = single_byte_xor_cipher(line, i);
 
             if text.is_ascii() {
                 println!("encrypted => {} {:?}", no, str::from_utf8(line));
-                return Ok(())
+                return Ok(());
             }
         }
     }

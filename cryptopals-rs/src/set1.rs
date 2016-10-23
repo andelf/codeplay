@@ -33,7 +33,9 @@ pub fn hex_to_base64(raw: &[u8]) -> Vec<u8> {
 
     let mut encoded = Vec::with_capacity(raw.len() / 2 / 3 * 4 + 2);
     for bytes in raw.chunks(6) {
-        let mut bits = unsafe { usize::from_str_radix(str::from_utf8_unchecked(bytes), 16).unwrap() };
+        let mut bits = unsafe {
+            usize::from_str_radix(str::from_utf8_unchecked(bytes), 16).unwrap()
+        };
         match bytes.len() {
             6 => {
                 encoded.push(CODES[(bits >> 18) & 0b111111]);
@@ -94,6 +96,39 @@ pub fn repeating_key_xor(text: &[u8], key: &[u8]) -> Vec<u8> {
 }
 
 
+pub fn hamming_distance(a: &[u8], b: &[u8]) -> usize {
+    assert_eq!(a.len(), b.len());
+    a.iter().zip(b.iter()).map(|(&i, &j)| (i ^ j).count_ones() as usize).sum()
+}
+
+
+pub fn base64_to_bytes(encoded: &[u8]) -> Vec<u8> {
+    static CODES: &'static [u8; 256] = &[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 62, 0, 0, 0, 63, 52, 53, 54, 55, 56, 57,
+                                         58, 59, 60, 61, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6,
+                                         7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+                                         22, 23, 24, 25, 0, 0, 0, 0, 0, 0, 26, 27, 28, 29, 30, 31,
+                                         32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+                                         46, 47, 48, 49, 50, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                         0, 0, 0, 0, 0, 0, 0, 0];
+    unimplemented!()
+}
+
+
+
+
+#[test]
+fn test_hamming_distance() {
+    assert_eq!(hamming_distance(b"this is a test".as_ref(), b"wokka wokka!!!".as_ref()),
+               37);
+}
 
 #[test]
 fn test_repeating_key_xor() {
