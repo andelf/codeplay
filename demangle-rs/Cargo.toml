@@ -1,0 +1,7 @@
+[package]
+name = "demangle-rs"
+version = "0.1.0"
+authors = ["andelf <andelf@gmail.com>"]
+
+[dependencies]
+rustc-demangle = "*"
